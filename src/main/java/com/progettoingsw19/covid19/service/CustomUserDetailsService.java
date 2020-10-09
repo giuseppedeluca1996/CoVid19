@@ -21,9 +21,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 
-        User user = userService.getUserByUsername(username);
+        User user = userService.getUserByUsername(usernameOrEmail);
         if(user != null) {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             for (Role r : user.getRoles()) {
@@ -31,8 +31,15 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
-        else
+        else if ((user=userService.getUserByEmail(usernameOrEmail))!= null){
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            for (Role r : user.getRoles()) {
+                authorities.add(new SimpleGrantedAuthority(r.getName().name()));
+            }
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        }else {
             throw new UsernameNotFoundException("");
+        }
     }
 
 
