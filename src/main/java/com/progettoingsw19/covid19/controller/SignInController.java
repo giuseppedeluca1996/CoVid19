@@ -2,34 +2,26 @@ package com.progettoingsw19.covid19.controller;
 
 
 import com.progettoingsw19.covid19.model.AuthRequest;
-import com.progettoingsw19.covid19.service.StructureService;
-import com.progettoingsw19.covid19.service.UserService;
 import com.progettoingsw19.covid19.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import java.util.Set;
-
 @RestController
-public class WelcomeController {
+@RequestMapping("public/signin")
+public class SignInController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    StructureService structureService;
+    private JwtUtil jwtUtil;
 
-    @Autowired
-    UserService userService;
-
-    @PostMapping("/public/login")
+    @PostMapping("/authenticate")
     public String welcome(@RequestBody AuthRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -41,5 +33,12 @@ public class WelcomeController {
         return jwtUtil.generateToken(authRequest.getUsername());
 
     }
+
+
+
+
+
+
+
 
 }
