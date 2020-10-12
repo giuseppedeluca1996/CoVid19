@@ -1,9 +1,12 @@
 package com.progettoingsw19.covid19.service;
 
-import com.progettoingsw19.covid19.model.Role;
+
 import com.progettoingsw19.covid19.model.User;
 import com.progettoingsw19.covid19.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Collection<User> getAllUser(){ return userRepository.findAll(); }
+    public Page<User> getAllUser(Integer page, Integer size){
+        return  userRepository.findAll(PageRequest.of(page, size));
+    }
     public User getUserById(Integer id){
         return userRepository.findById(id).orElse(null);
     }

@@ -4,10 +4,9 @@ import com.progettoingsw19.covid19.model.User;
 import com.progettoingsw19.covid19.service.UserService;
 import com.progettoingsw19.covid19.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/user")
@@ -19,10 +18,10 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @GetMapping("/getAllUser")
+    @GetMapping(value = "/getAllUser")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Collection<User> getAllUser() {
-        return userService.getAllUser();
+    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return userService.getAllUser(page, size);
     }
 
     @GetMapping(value = "/getUser", params = "userid")
