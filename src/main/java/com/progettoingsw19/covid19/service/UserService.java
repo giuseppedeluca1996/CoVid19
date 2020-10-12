@@ -1,11 +1,13 @@
 package com.progettoingsw19.covid19.service;
 
+import com.progettoingsw19.covid19.model.Role;
 import com.progettoingsw19.covid19.model.User;
 import com.progettoingsw19.covid19.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -14,12 +16,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-    public List<User> getAllUser(){ return userRepository.findAll(); }
+    public Collection<User> getAllUser(){ return userRepository.findAll(); }
     public User getUserById(Integer id){
         return userRepository.findById(id).orElse(null);
     }
@@ -91,6 +91,11 @@ public class UserService {
         userRepository.save(user);
 
     }
+
+    public List<Integer> getAllUserRolesByUsernameOrEmail(String  usernameOrEmail){
+        return userRepository.getRolesByUsernameOrEmail(usernameOrEmail);
+    }
+
 
 
 }
