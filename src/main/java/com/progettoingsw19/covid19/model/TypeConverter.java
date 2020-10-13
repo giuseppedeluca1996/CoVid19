@@ -12,7 +12,7 @@ public class TypeConverter implements AttributeConverter<Type, String>{
             return null;
         }
         String ris= type.name();
-        ris=ris.charAt(0)+ris.substring(1,ris.length()).toLowerCase();
+        ris=ris.charAt(0)+ris.substring(1).toLowerCase();
         return ris;
     }
 
@@ -25,7 +25,7 @@ public class TypeConverter implements AttributeConverter<Type, String>{
         if (Type.values()[0].toString().equalsIgnoreCase(value))
             return Type.HOTEL;
         else  if (Type.values()[1].toString().equalsIgnoreCase(value))
-            return Type.RESTOURANT;
+            return Type.RESTAURANT;
         else
             return Type.ATTRACTION;
     }

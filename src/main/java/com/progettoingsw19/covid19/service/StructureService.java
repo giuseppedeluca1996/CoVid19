@@ -1,21 +1,26 @@
 package com.progettoingsw19.covid19.service;
 
 import com.progettoingsw19.covid19.model.Structure;
+import com.progettoingsw19.covid19.model.Type;
 import com.progettoingsw19.covid19.repository.StructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class StructureService {
     @Autowired
     private StructureRepository structureRepository;
 
+    public Page<Structure> getAllStructure(Integer page, Integer size){ return structureRepository.findAll(PageRequest.of(page, size)); }
+    public Page<Structure> getAllHotel(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.HOTEL); }
+    public Page<Structure> getAllRestaurant(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.RESTAURANT); }
+    public Page<Structure> getAllAttraction(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.ATTRACTION); }
 
-    public List<Structure> getAllStructure(){ return structureRepository.findAll(); }
     public  Structure getStructureById(Integer id){ return structureRepository.findById(id).orElse(null); }
     public  Structure getStructureByLatitudeAndLongitude(BigDecimal latitude, BigDecimal longitude){ return structureRepository.findByLatitudeAndLongitude(latitude,longitude); }
 
