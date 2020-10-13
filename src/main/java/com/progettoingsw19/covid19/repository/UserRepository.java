@@ -20,5 +20,12 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     List<Integer> getRolesByUsernameOrEmail(String usernameOrEmail);
 
     Page<User> findAll(Pageable pageable);
+    @Query(value = "SELECT u " +
+            "FROM User AS u " +
+            "WHERE u.email  LIKE CONCAT('%',:text,'%') " +
+            "OR  u.username  LIKE CONCAT('%',:text,'%') " +
+            "OR u.name  LIKE CONCAT('%',:text,'%') " +
+            "OR  u.surname  LIKE CONCAT('%',:text,'%')")
+    Page<User> findAllByUsernameOrEmailOrNameOrSurname(Pageable pageable, String text);
 
 }

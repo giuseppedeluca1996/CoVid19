@@ -21,5 +21,10 @@ public interface StructureRepository extends JpaRepository<Structure,Integer> {
     Page<Structure> findAll(Pageable pageable);
     Page<Structure> findAllByTypeIs(Pageable pageable, Type type);
 
+    @Query("SELECT s FROM Structure AS s WHERE (s.name  LIKE CONCAT('%',:text,'%')) OR (s.address LIKE CONCAT('%',:text,'%')) OR (s.city LIKE CONCAT('%',:text,'%')) OR (s.state LIKE CONCAT('%',:text,'%')) ")
+    Page<Structure> findByNameOrAddressOrCityOrState(Pageable pageable, String text);
+
+    @Query("SELECT s FROM Structure AS s WHERE ((s.name  LIKE CONCAT('%',:text,'%')) OR (s.address LIKE CONCAT('%',:text,'%')) OR (s.city LIKE CONCAT('%',:text,'%')) OR (s.state LIKE CONCAT('%',:text,'%'))) AND s.type =  :type")
+    Page<Structure> findByNameOrAddressOrCityOrStateAndTypeEquals(Pageable pageable, String text, Type type);
 
 }

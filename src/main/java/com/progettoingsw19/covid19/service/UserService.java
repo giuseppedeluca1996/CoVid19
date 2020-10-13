@@ -6,11 +6,10 @@ import com.progettoingsw19.covid19.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -25,17 +24,25 @@ public class UserService {
     public Page<User> getAllUser(Integer page, Integer size){
         return  userRepository.findAll(PageRequest.of(page, size));
     }
+    public Page<User> getAllUserByText(Integer page, Integer size,String text){
+        return  userRepository.findAllByUsernameOrEmailOrNameOrSurname(PageRequest.of(page, size),text);
+    }
     public User getUserById(Integer id){
         return userRepository.findById(id).orElse(null);
     }
     public User getUserByUsername(String username){ return userRepository.findByUsername(username); }
     public User getUserByEmail(String email){ return userRepository.findByEmail(email); }
 
+    @Transactional
     public void deleteUser(User user){ userRepository.delete(user); }
+    @Transactional
     public void deleteUserById(Integer id){ userRepository.deleteById(id); }
+    @Transactional
     public void deleteUserByUsername(String username){ userRepository.deleteByUsername(username); }
+    @Transactional
     public void deleteUserByEmail(String email){ userRepository.deleteByEmail(email); }
 
+    @Transactional
     public void updateById(User newUser, Integer id){
         User user=userRepository.findById(id).orElse(null);
         if(user != null){
@@ -54,6 +61,7 @@ public class UserService {
             userRepository.save(user);
         }
     }
+    @Transactional
     public void updateByEmail(User newUser, String email){
         User user=userRepository.findByEmail(email);
         if(user != null){
@@ -72,6 +80,7 @@ public class UserService {
             userRepository.save(user);
         }
     }
+    @Transactional
     public void updateByUsername(User newUser, String username){
         User user=userRepository.findByUsername(username);
         if(user != null){
@@ -91,6 +100,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void insert(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

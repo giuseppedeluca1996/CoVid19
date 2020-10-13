@@ -23,6 +23,11 @@ public class UserController {
     public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         return userService.getAllUser(page, size);
     }
+    @GetMapping(value = "/getAllUser/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size,@PathVariable("userId") String usernameOrEmail) {
+        return userService.getAllUserByText(page, size, usernameOrEmail);
+    }
 
     @GetMapping(value = "/getUser", params = "userid")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -43,9 +48,9 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    @DeleteMapping(value = "/deleteUser",params = "userid" )
+    @DeleteMapping(value = "/deleteUser/{userid}" )
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteUserById(@RequestParam(name = "userid") Integer id){
+    public void deleteUserById(@PathVariable(name = "userid") Integer id){
         userService.deleteUserById(id);
     }
 

@@ -20,6 +20,11 @@ public class StructureService {
     public Page<Structure> getAllHotel(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.HOTEL); }
     public Page<Structure> getAllRestaurant(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.RESTAURANT); }
     public Page<Structure> getAllAttraction(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.ATTRACTION); }
+    public Page<Structure> getAllStructureByText(Integer page, Integer size,String text){ return structureRepository.findByNameOrAddressOrCityOrState(PageRequest.of(page,size), text); }
+
+    public Page<Structure> getAllHotelByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text,Type.HOTEL); }
+    public Page<Structure> getAllRestaurantByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size), text, Type.RESTAURANT); }
+    public Page<Structure> getAllAttractionByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text, Type.ATTRACTION); }
 
     public  Structure getStructureById(Integer id){ return structureRepository.findById(id).orElse(null); }
     public  Structure getStructureByLatitudeAndLongitude(BigDecimal latitude, BigDecimal longitude){ return structureRepository.findByLatitudeAndLongitude(latitude,longitude); }

@@ -32,4 +32,21 @@ public class StructureController {
         }
     }
 
+
+    @GetMapping(value = "/getAllStructuresByText/{text}" )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<Structure> getAllStructure(@PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return structureService.getAllStructureByText(page,size,text);
+    }
+
+    @GetMapping(value = "/getAllStructuresByText/{type}/{text}" )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        switch (type){
+            case HOTEL -> { return structureService.getAllHotelByText(page, size,text); }
+            case RESTAURANT -> { return structureService.getAllRestaurantByText(page, size, text); }
+            case ATTRACTION -> { return structureService.getAllAttractionByText(page, size,text); }
+            default ->  { return  structureService.getAllStructureByText(page,size,text); }
+        }
+    }
 }
