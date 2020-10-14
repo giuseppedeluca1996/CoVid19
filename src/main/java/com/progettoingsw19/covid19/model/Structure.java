@@ -83,14 +83,14 @@ public class Structure implements Serializable {
     @Column(name = "CLOSINGHOURS")
     @NotNull
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
+            (shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Date closingHours;
 
     @Temporal(TemporalType.TIME)
     @Column(name = "OPENINGHOURS")
     @NotNull
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
+            (shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Date openingHours;
 
     @OneToMany(mappedBy = "idStructure", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

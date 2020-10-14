@@ -47,11 +47,13 @@ public class ReviewService {
     public Double getAverageOfRating(Structure s){
 
         List<Review> reviews = getAllByStructure(s);
-        double average=0D;
+        Double average=0D;
         for(Review r : reviews){
             average +=  r.getRating().doubleValue();
         }
-        return average/reviews.size();
+        return  (reviews.size()!=0) ? average/reviews.size() : 0D;
+
+
 
     }
 
