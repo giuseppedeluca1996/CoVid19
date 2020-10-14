@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,8 @@ public class Review {
 
     @Column(name = "RATING")
     @NotNull
-    private Short rating;
+    private BigDecimal rating;
+
 
     @Column(name = "DESCRIPTION")
     @NotNull
@@ -34,15 +36,15 @@ public class Review {
 
     @Column(name = "QUALITYPRICE", nullable = true)
     @NotNull
-    private Short qualityPrice;
+    private BigDecimal qualityPrice;
 
     @Column(name = "CLEANING", nullable = true)
     @NotNull
-    private Short cleaning;
+    private BigDecimal cleaning;
 
     @Column(name = "SERVICE", nullable = true)
     @NotNull
-    private Short service;
+    private BigDecimal service;
 
     @ManyToOne
     @JoinColumn(name = "IDUSER", nullable = false)
@@ -53,7 +55,7 @@ public class Review {
     private  Structure idStructure;
 
 
-    public Review(Integer id, Short rating, String description, Date date, Short qualityPrice, Short cleaning, Short service) {
+    public Review(Integer id, BigDecimal rating, String description, Date date, BigDecimal qualityPrice, BigDecimal cleaning, BigDecimal service) {
         this.id = id;
         this.rating = rating;
         this.description = description;
@@ -71,11 +73,11 @@ public class Review {
         this.id = id;
     }
 
-    public Short getRating() {
+    public BigDecimal getRating() {
         return rating;
     }
 
-    public void setRating(Short rating) {
+    public void setRating(BigDecimal rating) {
         this.rating = rating;
     }
 
@@ -95,25 +97,25 @@ public class Review {
         this.date = date;
     }
 
-    public Short getQualityPrice() {
+    public BigDecimal getQualityPrice() {
         return qualityPrice;
     }
 
-    public void setQualityPrice(Short qualityPrice) {
+    public void setQualityPrice(BigDecimal qualityPrice) {
         this.qualityPrice = qualityPrice;
     }
 
-    public Short getCleaning() {
+    public BigDecimal getCleaning() {
         return cleaning;
     }
 
-    public void setCleaning(Short cleaning) {
+    public void setCleaning(BigDecimal cleaning) {
         this.cleaning = cleaning;
     }
 
-    public Short getService() { return service; }
+    public BigDecimal getService() { return service; }
 
-    public void setService(Short service) {
+    public void setService(BigDecimal service) {
         this.service = service;
     }
 
@@ -125,5 +127,15 @@ public class Review {
     @JsonIgnore
     public Structure getIdStructure() {
         return idStructure;
+    }
+
+    @JsonIgnore
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
+    }
+
+    @JsonIgnore
+    public void setIdStructure(Structure idStructure) {
+        this.idStructure = idStructure;
     }
 }

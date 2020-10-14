@@ -1,5 +1,6 @@
 package com.progettoingsw19.covid19.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.EqualsAndHashCode;
@@ -81,11 +82,15 @@ public class Structure implements Serializable {
     @Temporal(TemporalType.TIME)
     @Column(name = "CLOSINGHOURS")
     @NotNull
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private Date closingHours;
 
     @Temporal(TemporalType.TIME)
     @Column(name = "OPENINGHOURS")
     @NotNull
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private Date openingHours;
 
     @OneToMany(mappedBy = "idStructure", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

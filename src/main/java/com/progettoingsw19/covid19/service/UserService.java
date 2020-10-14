@@ -43,7 +43,7 @@ public class UserService {
     public void deleteUserByEmail(String email){ userRepository.deleteByEmail(email); }
 
     @Transactional
-    public void updateById(User newUser, Integer id){
+    public User updateById(User newUser, Integer id){
         User user=userRepository.findById(id).orElse(null);
         if(user != null){
             user.setDateOfBirth(newUser.getDateOfBirth());
@@ -58,11 +58,13 @@ public class UserService {
             }else {
                 user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             }
-            userRepository.save(user);
+            return userRepository.save(user);
         }
+        return null;
     }
     @Transactional
-    public void updateByEmail(User newUser, String email){
+    public User updateByEmail(User newUser, String email){
+
         User user=userRepository.findByEmail(email);
         if(user != null){
             user.setDateOfBirth(newUser.getDateOfBirth());
@@ -72,16 +74,18 @@ public class UserService {
             user.setName(newUser.getName());
             user.setUsername(newUser.getUsername());
             user.setEmail(newUser.getEmail());
+            user.setEnabled(newUser.getEnabled());
             if(passwordEncoder.matches(newUser.getPassword(), user.getPassword())){
                 user.setPassword(newUser.getPassword());
             }else {
                 user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             }
-            userRepository.save(user);
+            return userRepository.save(user);
         }
+        return null;
     }
     @Transactional
-    public void updateByUsername(User newUser, String username){
+    public User updateByUsername(User newUser, String username){
         User user=userRepository.findByUsername(username);
         if(user != null){
             user.setDateOfBirth(newUser.getDateOfBirth());
@@ -91,13 +95,15 @@ public class UserService {
             user.setName(newUser.getName());
             user.setUsername(newUser.getUsername());
             user.setEmail(newUser.getEmail());
+            user.setEnabled(newUser.getEnabled());
             if(passwordEncoder.matches(newUser.getPassword(), user.getPassword())){
                 user.setPassword(newUser.getPassword());
             }else {
                 user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             }
-            userRepository.save(user);
+            return userRepository.save(user);
         }
+        return null;
     }
 
     @Transactional

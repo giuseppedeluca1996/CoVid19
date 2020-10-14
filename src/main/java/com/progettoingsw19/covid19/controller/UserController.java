@@ -71,15 +71,15 @@ public class UserController {
 
     @PutMapping(value = "/updateUser", params = "userid")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateUserById( @RequestBody User user, @RequestParam(name = "userid") Integer id){ userService.updateById(user, id); }
+    public User updateUserById( @RequestBody User user, @RequestParam(name = "userid") Integer id){ return userService.updateById(user, id); }
 
     @PutMapping(value = "/updateUser", params = "email")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateUserByEmail( @RequestBody User user, @RequestParam(name = "email") String email){ userService.updateByEmail(user, email); }
+    public User updateUserByEmail( @RequestBody User user, @RequestParam(name = "email") String email){ return userService.updateByEmail(user, email); }
 
     @PutMapping(value = "/updateUser",params = "username")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateUserByUsername( @RequestBody User user, @RequestParam(name = "username") String username){ userService.updateByUsername(user, username); }
+    public User updateUserByUsername( @RequestBody User user, @RequestParam(name = "username") String username){ return userService.updateByUsername(user, username); }
 
 
     @GetMapping( value = "/isAdmin", params = "token")

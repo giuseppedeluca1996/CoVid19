@@ -3,9 +3,11 @@ package com.progettoingsw19.covid19.service;
 import com.progettoingsw19.covid19.model.Review;
 import com.progettoingsw19.covid19.model.Structure;
 import com.progettoingsw19.covid19.repository.ReviewRepository;
+import com.progettoingsw19.covid19.repository.StructureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -13,8 +15,6 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
-
 
     public List<Review> getAllReview(){ return reviewRepository.findAll(); }
     public  Review getReviewById(Integer id){ return reviewRepository.findById(id).orElse(null); }
@@ -37,5 +37,22 @@ public class ReviewService {
     }
 
     public void insert(Review review){ reviewRepository.save(review); }
+
+
+
+    public List<Review> getAllByStructure(Structure s){
+        return reviewRepository.getAllReviewsByIdStructure(s);
+    }
+
+    public Double getAverageOfRating(Structure s){
+
+        List<Review> reviews = getAllByStructure(s);
+        double average=0D;
+        for(Review r : reviews){
+            average +=  r.getRating().doubleValue();
+        }
+        return average/reviews.size();
+
+    }
 
 }
