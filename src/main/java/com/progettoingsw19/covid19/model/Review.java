@@ -1,69 +1,110 @@
 package com.progettoingsw19.covid19.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+
+
+
 @Entity
-@NoArgsConstructor
+@NamedNativeQuery(
+        name = "Review.AvgRatingOfReviewOfUser",
+        query = "select  MONTH(r.date) AS id, MONTH(r.date) as month, COUNT(r.id_user) as number_of_review, AVG(r.rating) AS avg_rating FROM reviews AS r WHERE r.id_user = :id AND YEAR(r.date) = :year GROUP BY MONTH(r.date) ORDER BY MONTH(r.date)",
+        resultSetMapping = "avgReviewOfUser"
+)
+
+@SqlResultSetMapping(
+        name = "avgReviewOfUser",
+        entities = {
+                @EntityResult(
+                        entityClass = AvgRatingReviewOfUser.class,
+                        fields = {
+                                @FieldResult(name = "id", column = "id"),
+                                @FieldResult(name = "month", column = "month"),
+                                @FieldResult(name = "number_of_review", column = "number_of_review"),
+                                @FieldResult(name = "avg_rating", column = "avg_rating")
+
+                        }
+                )
+        }
+)
+
+@NamedNativeQuery(
+        name = "Review.AvgRatingOfReviewOfStructure",
+        query = "SELECT MONTH(r.date) as id, MONTH(r.date) as month,  AVG(r.rating)as avg_rating FROM reviews AS r WHERE   YEAR(r.date) = :year AND r.id_structure = :id group by MONTH(r.date) order by MONTH(r.date) ASC",
+        resultSetMapping = "avgReviewOfStructure"
+)
+
+@SqlResultSetMapping(
+        name = "avgReviewOfStructure",
+        entities = {
+                @EntityResult(
+                        entityClass = AvgRatingReviewOfStructure.class,
+                        fields = {
+                                @FieldResult(name = "id", column = "id"),
+                                @FieldResult(name = "month", column = "month"),
+                                @FieldResult(name = "avg_rating", column = "avg_rating")
+                        }
+                )
+        }
+)
+
+
+
+
+@Table(name = "reviews")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Integer id;
 
 
-    @Column(name = "RATING")
+    @Column(name = "rating")
     @NotNull
     private BigDecimal rating;
 
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     @NotNull
     private String description;
 
-    @Column(name = "DATE")
+    @Column(name = "date")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
 
-    @Column(name = "QUALITYPRICE", nullable = true)
+    @Column(name = "quality_price")
     @NotNull
     private BigDecimal qualityPrice;
 
-    @Column(name = "CLEANING", nullable = true)
+    @Column(name = "cleaning")
     @NotNull
     private BigDecimal cleaning;
 
-    @Column(name = "SERVICE", nullable = true)
+    @Column(name = "service")
     @NotNull
     private BigDecimal service;
 
-    @ManyToOne
-    @JoinColumn(name = "IDUSER", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_user")
+    @JsonBackReference
+    @JsonIgnore
     private  User idUser;
 
-    @ManyToOne
-    @JoinColumn(name = "IDSTRUCTURE", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_structure")
+    @JsonIgnore
     private  Structure idStructure;
-
-
-    public Review(Integer id, BigDecimal rating, String description, Date date, BigDecimal qualityPrice, BigDecimal cleaning, BigDecimal service) {
-        this.id = id;
-        this.rating = rating;
-        this.description = description;
-        this.date = date;
-        this.qualityPrice = qualityPrice;
-        this.cleaning = cleaning;
-        this.service = service;
-    }
 
     public Integer getId() {
         return id;
@@ -113,7 +154,9 @@ public class Review {
         this.cleaning = cleaning;
     }
 
-    public BigDecimal getService() { return service; }
+    public BigDecimal getService() {
+        return service;
+    }
 
     public void setService(BigDecimal service) {
         this.service = service;
@@ -125,13 +168,13 @@ public class Review {
     }
 
     @JsonIgnore
-    public Structure getIdStructure() {
-        return idStructure;
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
     }
 
     @JsonIgnore
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public Structure getIdStructure() {
+        return idStructure;
     }
 
     @JsonIgnore

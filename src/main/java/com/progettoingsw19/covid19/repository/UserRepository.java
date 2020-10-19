@@ -11,15 +11,18 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Integer> {
 
     User findByUsername(String username);
+
     User findByEmail(String email);
 
     void deleteByUsername(String username);
+
     void deleteByEmail(String email);
 
-    @Query(value = "SELECT us.idRole FROM user AS u inner join user_role as us on u.id=us.idUser WHERE u.username = ?1 OR u.email = ?1", nativeQuery = true)
+    @Query(value = "SELECT us.id_role FROM users AS u inner join user_role as us on u.id=us.id_user WHERE u.username = ?1 OR u.email = ?1", nativeQuery = true)
     List<Integer> getRolesByUsernameOrEmail(String usernameOrEmail);
 
     Page<User> findAll(Pageable pageable);
+
     @Query(value = "SELECT u " +
             "FROM User AS u " +
             "WHERE u.email  LIKE CONCAT('%',:text,'%') " +

@@ -3,29 +3,30 @@ package com.progettoingsw19.covid19.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="ROLE")
+@Table(name="roles")
 @NoArgsConstructor
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Integer id;
 
-
-    @Column(name = "NAME")
+    @Column(name = "name")
     @NotNull
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonBackReference
+    @JsonIgnore
     List<User> users;
 
     public Integer getId() {

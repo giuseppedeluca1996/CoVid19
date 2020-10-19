@@ -1,79 +1,80 @@
 package com.progettoingsw19.covid19.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name="USER")
+@Table(name = "users")
 @NoArgsConstructor
 public class User implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column( name = "id")
     private Integer id;
 
-    @Column(name = "USERNAME", unique = true)
+    @Column(name = "username", unique = true)
     @NotNull
     private String username;
 
-    @Column(name = "EMAIL", unique = true)
+    @Column(name = "email", unique = true)
     @NotNull
     private String email;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     @NotNull
     private String name;
 
-    @Column(name = "SURNAME")
+    @Column(name = "surname")
     @NotNull
     private String surname;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     @NotNull
     private String password;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "DATEOFBIRTH")
+    @Column(name = "date_of_birth")
     @NotNull
     private Date dateOfBirth;
 
-
-    @Column(name = "PREFERENCESVIEW")
+    @Column(name = "preferences_view")
     @NotNull
-    @Type(type="boolean")
     private Boolean preferencesView;
 
-
-    @Column(name = "GENDER")
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     @NotNull
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Review> reviews = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "idUser", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
+    private Set<Review> reviews;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "USER_ROLE",
-            joinColumns = { @JoinColumn(name = "IDUSER", referencedColumnName = "ID") },
-            inverseJoinColumns = { @JoinColumn(name = "IDROLE", referencedColumnName = "ID") }
+            name = "user_role",
+            joinColumns = { @JoinColumn(name = "id_user", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "id_role", referencedColumnName = "id") }
     )
     @JsonManagedReference
     @JsonIgnore
-    private  List<Role> roles;
-
+    private List<Role> roles;
 
 
     public Integer getId() {
@@ -131,7 +132,6 @@ public class User implements Serializable {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
 
     public Boolean getPreferencesView() {
         return preferencesView;

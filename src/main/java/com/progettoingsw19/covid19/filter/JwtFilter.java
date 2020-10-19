@@ -1,6 +1,7 @@
 package com.progettoingsw19.covid19.filter;
 
 
+import com.progettoingsw19.covid19.model.RoleEnum;
 import com.progettoingsw19.covid19.service.CustomUserDetailsService;
 import com.progettoingsw19.covid19.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -33,14 +36,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
         String userName = null;
+        Boolean isAdmin = false;
+        List<RoleEnum> authorities = new ArrayList<>();
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);
             userName = jwtUtil.extractUsername(token);
+
+            authorities.add(RoleEnum.ROLE_REVIEWER);
+            if(isAdmin=jwtUtil.isAdmin(token))
+                authorities.add(RoleEnum.ROLE_ADMIN);
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
+            service.setRoleEnums(authorities);
             UserDetails userDetails = service.loadUserByUsername(userName);
 
             if (jwtUtil.validateToken(token, userDetails)) {

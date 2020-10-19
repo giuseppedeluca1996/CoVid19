@@ -18,16 +18,13 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @GetMapping(value = "/getAllUser")
+    @GetMapping(value = "/getAllUser", params = { "page", "size"}  )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return userService.getAllUser(page, size);
-    }
+    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) { return userService.getAllUser(page, size); }
+
     @GetMapping(value = "/getAllUser/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size,@PathVariable("userId") String usernameOrEmail) {
-        return userService.getAllUserByText(page, size, usernameOrEmail);
-    }
+    public Page<User> getAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size,@PathVariable("userId") String usernameOrEmail) { return userService.getAllUserByText(page, size, usernameOrEmail); }
 
     @GetMapping(value = "/getUser", params = "userid")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -35,12 +32,9 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-
     @GetMapping(value = "/getUser", params = "username")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User getUserByUsername(@RequestParam("username") String username) {
-        return userService.getUserByUsername(username);
-    }
+    public User getUserByUsername(@RequestParam("username") String username) { return userService.getUserByUsername(username); }
 
     @GetMapping(value = "/getUser", params = "email")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -56,9 +50,7 @@ public class UserController {
 
     @DeleteMapping(value = "/deleteUser",params = "username" )
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteUserByUsername(@RequestParam(name = "username") String username){
-        userService.deleteUserByUsername(username);
-    }
+    public void deleteUserByUsername(@RequestParam(name = "username") String username){ userService.deleteUserByUsername(username); }
 
     @DeleteMapping(value = "/deleteUser",params = "email" )
     @PreAuthorize("hasRole('ADMIN')")
@@ -80,7 +72,6 @@ public class UserController {
     @PutMapping(value = "/updateUser",params = "username")
     @PreAuthorize("hasRole('ADMIN')")
     public User updateUserByUsername( @RequestBody User user, @RequestParam(name = "username") String username){ return userService.updateByUsername(user, username); }
-
 
     @GetMapping( value = "/isAdmin", params = "token")
     public Boolean isAdmin (@RequestParam (name = "token")String token){

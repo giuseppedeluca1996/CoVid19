@@ -36,12 +36,4 @@ public class SignInController {
         return jwtUtil.generateToken((authRequest.getUsername()==null) ? authRequest.getEmail() : authRequest.getUsername());
 
     }
-
-
-
-
-
-
-
-
 }

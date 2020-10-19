@@ -17,20 +17,29 @@ public class StructureService {
     private StructureRepository structureRepository;
 
     public Page<Structure> getAllStructure(Integer page, Integer size){ return structureRepository.findAll(PageRequest.of(page, size)); }
+
     public Page<Structure> getAllHotel(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.HOTEL); }
+
     public Page<Structure> getAllRestaurant(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.RESTAURANT); }
+
     public Page<Structure> getAllAttraction(Integer page, Integer size){ return structureRepository.findAllByTypeIs(PageRequest.of(page,size), Type.ATTRACTION); }
+
     public Page<Structure> getAllStructureByText(Integer page, Integer size,String text){ return structureRepository.findByNameOrAddressOrCityOrState(PageRequest.of(page,size), text); }
 
     public Page<Structure> getAllHotelByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text,Type.HOTEL); }
+
     public Page<Structure> getAllRestaurantByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size), text, Type.RESTAURANT); }
+
     public Page<Structure> getAllAttractionByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text, Type.ATTRACTION); }
 
     public  Structure getStructureById(Integer id){ return structureRepository.findById(id).orElse(null); }
+
     public  Structure getStructureByLatitudeAndLongitude(BigDecimal latitude, BigDecimal longitude){ return structureRepository.findByLatitudeAndLongitude(latitude,longitude); }
 
     public void deleteStructure(Structure structure) { structureRepository.delete(structure); }
+
     public void deleteStructureById(Integer id) { structureRepository.deleteById(id); }
+
     public void deleteStructureByLatitudeAndLongitude(BigDecimal latitude, BigDecimal longitude ) { structureRepository.deleteByLatitudeAndLongitude(latitude,longitude); }
 
     public void updateStructureById(Structure newStructure, Integer id) {
@@ -54,6 +63,7 @@ public class StructureService {
             structureRepository.save(s);
         }
     }
+
     public void updateStructureByLatitudeAndLongitude(Structure newStructure, BigDecimal latitude, BigDecimal longitude ) {
         Structure s= structureRepository.findByLatitudeAndLongitude(latitude,longitude);
         if(s != null){

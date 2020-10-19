@@ -1,6 +1,5 @@
 package com.progettoingsw19.covid19.util;
 
-import com.progettoingsw19.covid19.model.Role;
 import com.progettoingsw19.covid19.model.RoleEnum;
 import com.progettoingsw19.covid19.service.RoleService;
 import com.progettoingsw19.covid19.service.UserService;
@@ -36,6 +35,7 @@ public class JwtUtil {
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
     public Boolean extractAdmin(String token) {
         final Claims claims = extractAllClaims(token);
        return (Boolean)claims.get("admin");

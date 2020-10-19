@@ -29,11 +29,8 @@ public class StructureController {
         }
     }
 
-
     @GetMapping(value = "/public/getAllStructuresByText/{text}" )
-    public Page<Structure> getAllStructure(@PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return structureService.getAllStructureByText(page,size,text);
-    }
+    public Page<Structure> getAllStructure(@PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) { return structureService.getAllStructureByText(page,size,text); }
 
     @GetMapping(value = "/public/getAllStructuresByText/{type}/{text}" )
     public Page<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
@@ -44,4 +41,6 @@ public class StructureController {
             default ->  { return  structureService.getAllStructureByText(page,size,text); }
         }
     }
+
+
 }

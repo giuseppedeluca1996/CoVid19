@@ -21,24 +21,24 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Page<User> getAllUser(Integer page, Integer size){
-        return  userRepository.findAll(PageRequest.of(page, size));
-    }
-    public Page<User> getAllUserByText(Integer page, Integer size,String text){
-        return  userRepository.findAllByUsernameOrEmailOrNameOrSurname(PageRequest.of(page, size),text);
-    }
+    public Page<User> getAllUser(Integer page, Integer size){ return  userRepository.findAll(PageRequest.of(page, size)); }
+
+    public Page<User> getAllUserByText(Integer page, Integer size,String text){ return  userRepository.findAllByUsernameOrEmailOrNameOrSurname(PageRequest.of(page, size),text); }
+
     public User getUserById(Integer id){
         return userRepository.findById(id).orElse(null);
     }
+
     public User getUserByUsername(String username){ return userRepository.findByUsername(username); }
+
     public User getUserByEmail(String email){ return userRepository.findByEmail(email); }
 
     @Transactional
-    public void deleteUser(User user){ userRepository.delete(user); }
-    @Transactional
     public void deleteUserById(Integer id){ userRepository.deleteById(id); }
+
     @Transactional
     public void deleteUserByUsername(String username){ userRepository.deleteByUsername(username); }
+
     @Transactional
     public void deleteUserByEmail(String email){ userRepository.deleteByEmail(email); }
 
@@ -62,6 +62,7 @@ public class UserService {
         }
         return null;
     }
+
     @Transactional
     public User updateByEmail(User newUser, String email){
 
@@ -84,6 +85,7 @@ public class UserService {
         }
         return null;
     }
+
     @Transactional
     public User updateByUsername(User newUser, String username){
         User user=userRepository.findByUsername(username);
@@ -110,12 +112,9 @@ public class UserService {
     public void insert(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
     }
 
-    public List<Integer> getAllUserRolesByUsernameOrEmail(String  usernameOrEmail){
-        return userRepository.getRolesByUsernameOrEmail(usernameOrEmail);
-    }
+    public List<Integer> getAllUserRolesByUsernameOrEmail(String  usernameOrEmail){ return userRepository.getRolesByUsernameOrEmail(usernameOrEmail); }
 
 
 

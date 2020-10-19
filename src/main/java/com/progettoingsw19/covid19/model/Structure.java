@@ -3,6 +3,7 @@ package com.progettoingsw19.covid19.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -15,107 +16,84 @@ import java.util.Set;
 
 
 @Entity
-@Table(name="STRUCTURE")
+@Table(name="structures")
 @NoArgsConstructor
 public class Structure implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     @NotNull
     private String name;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "address")
     @NotNull
     private String address;
 
-    @Column(name = "IMAGELINk")
+    @Column(name = "image_link")
     @NotNull
     private String imageLink;
 
-    @Column(name = "SITE")
+    @Column(name = "site")
     @NotNull
     private String site;
 
-    @Column(name = "EMAIL")
+    @Column(name = "email")
     @NotNull
     private String email;
 
-    @Column(name = "STATE")
+    @Column(name = "state")
     @NotNull
     private String state;
 
-    @Column(name = "CITY")
+    @Column(name = "city")
     @NotNull
     private String city;
 
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     @NotNull
     private String phone;
 
-    @Column(name = "TYPE")
+    @Column(name = "type")
     @NotNull
     private Type type;
 
-
-    @Column(name = "PRICEMIN")
+    @Column(name = "price_min")
     @NotNull
     private Double priceMin;
 
-    @Column(name = "PRICEMAX")
+    @Column(name = "price_max")
     @NotNull
     private Double priceMax;
 
-
-
-    @Column(name = "LATITUDE")
+    @Column(name = "latitude")
     @NotNull
     private BigDecimal latitude;
 
-    @Column(name = "LONGITUDE")
+    @Column(name = "longitude")
     @NotNull
     private BigDecimal longitude;
 
     @Temporal(TemporalType.TIME)
-    @Column(name = "CLOSINGHOURS")
+    @Column(name = "closing_hours")
     @NotNull
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Date closingHours;
 
     @Temporal(TemporalType.TIME)
-    @Column(name = "OPENINGHOURS")
+    @Column(name = "opening_hours")
     @NotNull
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Date openingHours;
 
-    @OneToMany(mappedBy = "idStructure", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idStructure", fetch = FetchType.LAZY)
     @JsonIgnore
     Set<Review> reviews = new HashSet<>();
-
-
-    public Structure(Integer id, String name, String address, String imageLink, String site, String email, String state, String city, String phone, Type type, Double priceMin, Double priceMax, BigDecimal latitude, BigDecimal longitude, Date closingHours, Date openingHours) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.imageLink = imageLink;
-        this.site = site;
-        this.email = email;
-        this.state = state;
-        this.city = city;
-        this.phone = phone;
-        this.type = type;
-        this.priceMin = priceMin;
-        this.priceMax = priceMax;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.closingHours = closingHours;
-        this.openingHours = openingHours;
-    }
 
     public Integer getId() {
         return id;
@@ -229,13 +207,17 @@ public class Structure implements Serializable {
         this.longitude = longitude;
     }
 
-    public Date getClosingHours() { return closingHours; }
+    public Date getClosingHours() {
+        return closingHours;
+    }
 
     public void setClosingHours(Date closingHours) {
         this.closingHours = closingHours;
     }
 
-    public Date getOpeningHours() { return openingHours; }
+    public Date getOpeningHours() {
+        return openingHours;
+    }
 
     public void setOpeningHours(Date openingHours) {
         this.openingHours = openingHours;
@@ -244,5 +226,10 @@ public class Structure implements Serializable {
     @JsonIgnore
     public Set<Review> getReviews() {
         return reviews;
+    }
+
+    @JsonIgnore
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }
