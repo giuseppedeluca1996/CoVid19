@@ -35,7 +35,6 @@ import java.util.Date;
                 )
         }
 )
-
 @NamedNativeQuery(
         name = "Review.AvgRatingOfReviewOfStructure",
         query = "SELECT MONTH(r.date) as id, MONTH(r.date) as month,  AVG(r.rating)as avg_rating FROM reviews AS r WHERE   YEAR(r.date) = :year AND r.id_structure = :id group by MONTH(r.date) order by MONTH(r.date) ASC",
