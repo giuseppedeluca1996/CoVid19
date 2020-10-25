@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class StructureService {
@@ -32,6 +34,16 @@ public class StructureService {
     public Page<Structure> getAllRestaurantByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size), text, Type.RESTAURANT); }
 
     public Page<Structure> getAllAttractionByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text, Type.ATTRACTION); }
+
+    public Collection<Structure> getAllStructureByText(String text){ return structureRepository.findByNameOrAddressOrCityOrState(text); }
+
+    public Collection<Structure> getAllHotelByText( String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(text,Type.HOTEL); }
+
+    public Collection<Structure> getAllRestaurantByText(String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals( text, Type.RESTAURANT); }
+
+    public Collection<Structure> getAllAttractionByText(String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(text, Type.ATTRACTION); }
+
+
 
     public  Structure getStructureById(Integer id){ return structureRepository.findById(id).orElse(null); }
 
@@ -97,5 +109,35 @@ public class StructureService {
     }
     public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude,Type type) {
         return structureRepository.getStructureAroundYou(latitude,longitude,type);
+    }
+
+
+    public Collection<String> getTips(String text) {
+
+        ListenableFuture<Collection<String>> ftipsState;
+        ListenableFuture<Collection<String>> ftipsCity;
+        Collection<String> tipsCity;
+        Collection<String> tipsState;
+        ftipsState=structureRepository.getTipsState(text);
+        ftipsCity=structureRepository.getTipsCity(text);
+
+        if(ftipsCity.isDone() && ftipsState.isDone()){
+            try {
+                tipsState=ftipsState.get();
+                tipsCity=ftipsCity.get();
+                if(tipsCity != null){
+                    if(tipsState != null){
+                        tipsCity.addAll(tipsState);
+                    }
+                    return tipsCity;
+                }else {
+                    return tipsState;
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
     }
 }

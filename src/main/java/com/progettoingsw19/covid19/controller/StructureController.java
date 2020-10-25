@@ -3,6 +3,7 @@ package com.progettoingsw19.covid19.controller;
 import com.progettoingsw19.covid19.model.Structure;
 import com.progettoingsw19.covid19.model.Type;
 import com.progettoingsw19.covid19.service.StructureService;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,10 @@ public class StructureController {
     }
 
     @GetMapping(value = "/public/getAllStructuresByText/{text}" )
-    public Page<Structure> getAllStructure(@PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) { return structureService.getAllStructureByText(page,size,text); }
+    public Page<Structure> getAllStructure(@PathVariable("text") String text,  @RequestParam("page") Integer page,  @RequestParam("size") Integer size) { return structureService.getAllStructureByText(page,size,text); }
 
     @GetMapping(value = "/public/getAllStructuresByText/{type}/{text}" )
-    public Page<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+    public Page<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text,  @RequestParam("page") Integer page,  @RequestParam("size") Integer size) {
         switch (type){
             case HOTEL -> { return structureService.getAllHotelByText(page, size,text); }
             case RESTAURANT -> { return structureService.getAllRestaurantByText(page, size, text); }
@@ -45,6 +46,20 @@ public class StructureController {
         }
     }
 
+    @GetMapping(value = "/public/getAllStructuresByTextNotPaginable/{text}" )
+    public Collection<Structure> getAllStructure(@PathVariable("text") String text) {
+        return structureService.getAllStructureByText(text);
+    }
+
+    @GetMapping(value = "/public/getAllStructuresByTextNotPaginable/{type}/{text}" )
+    public Collection<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text) {
+        switch (type){
+            case HOTEL -> { return structureService.getAllHotelByText(text); }
+            case RESTAURANT -> { return structureService.getAllRestaurantByText( text); }
+            case ATTRACTION -> { return structureService.getAllAttractionByText(text); }
+            default ->  { return  structureService.getAllStructureByText(text); }
+        }
+    }
 
     @GetMapping(value = "/public/getStructureAtDistance", params = {"latitude", "longitude", "distance"} )
     public Collection<Structure> getStructureAroundYou(@RequestParam(name = "latitude") BigDecimal latitude, @RequestParam(name = "longitude") BigDecimal longitude, @RequestParam(name = "distance") BigDecimal distance) {
@@ -62,5 +77,8 @@ public class StructureController {
     }
 
 
-
+    @GetMapping(value = "/public/getTips", params = "text")
+    public Collection<String> getTips(@RequestParam(name = "text") String text){
+        return structureService.getTips(text);
+    }
 }

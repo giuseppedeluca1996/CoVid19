@@ -20,8 +20,8 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping(value = "/public/getAllReviewOfStructure")
-    public List<Review> getAllReviewOfStructure(@RequestParam Integer idStructure){
+    @GetMapping(value = "/public/getAllReviewOfStructure", params = "idStructure")
+    public List<Review> getAllReviewOfStructure(@RequestParam(name = "idStructure") Integer idStructure){
         return reviewService.getAllReviewByIdStructure(idStructure);
     }
 
