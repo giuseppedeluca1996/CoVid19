@@ -1,7 +1,7 @@
 package com.progettoingsw19.covid19.service;
 
 
-import com.progettoingsw19.covid19.model.Role;
+import com.progettoingsw19.covid19.model.Roles;
 import com.progettoingsw19.covid19.model.RoleEnum;
 import com.progettoingsw19.covid19.model.User;
 import com.progettoingsw19.covid19.util.JwtUtil;
@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user != null) {
             if(roleEnums==null){
                 roleEnums=new ArrayList<>();
-                for (Role r : user.getRoles()){
+                for (Roles r : user.getRoles()){
                     roleEnums.add(r.getName());
                 }
             }
@@ -48,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         else if ((user=userService.getUserByEmail(usernameOrEmail))!= null){
             if(roleEnums==null){
                 roleEnums=new ArrayList<>();
-                for (Role r : user.getRoles()){
+                for (Roles r : user.getRoles()){
                     roleEnums.add(r.getName());
                 }
             }

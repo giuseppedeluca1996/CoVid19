@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
+import java.util.Collection;
 
 @Service
 public class StructureService {
@@ -86,4 +87,15 @@ public class StructureService {
         } }
 
     public void insert(Structure structure){ structureRepository.save(structure); }
+
+    public Collection<Structure> getStructureAtDistance(BigDecimal latitude, BigDecimal longitude, BigDecimal distance) {
+        return structureRepository.getStructureAtDistance(latitude,longitude,distance);
+    }
+
+    public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude) {
+        return structureRepository.getStructureAroundYou(latitude,longitude);
+    }
+    public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude,Type type) {
+        return structureRepository.getStructureAroundYou(latitude,longitude,type);
+    }
 }

@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+
 @RestController
 @RequestMapping( value = "/structure")
 public class StructureController {
@@ -41,6 +44,23 @@ public class StructureController {
             default ->  { return  structureService.getAllStructureByText(page,size,text); }
         }
     }
+
+
+    @GetMapping(value = "/public/getStructureAtDistance", params = {"latitude", "longitude", "distance"} )
+    public Collection<Structure> getStructureAroundYou(@RequestParam(name = "latitude") BigDecimal latitude, @RequestParam(name = "longitude") BigDecimal longitude, @RequestParam(name = "distance") BigDecimal distance) {
+        return structureService.getStructureAtDistance(latitude,longitude,distance);
+    }
+
+    @GetMapping(value = "/public/getStructureAroundYou", params = {"latitude", "longitude", "type"} )
+    public Collection<Structure> getStructureAroundYou(@RequestParam(name = "latitude") BigDecimal latitude, @RequestParam(name = "longitude") BigDecimal longitude, @RequestParam(name = "type") Type type) {
+        return structureService.getStructureAroundYou(latitude,longitude,type);
+    }
+
+    @GetMapping(value = "/public/getStructureAroundYou", params = {"latitude", "longitude"} )
+    public Collection<Structure> getStructureAroundYou(@RequestParam(name = "latitude") BigDecimal latitude, @RequestParam(name = "longitude") BigDecimal longitude) {
+        return structureService.getStructureAroundYou(latitude,longitude);
+    }
+
 
 
 }

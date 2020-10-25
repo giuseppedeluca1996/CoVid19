@@ -4,7 +4,6 @@ package com.progettoingsw19.covid19.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -74,7 +73,7 @@ public class User implements Serializable {
     )
     @JsonManagedReference
     @JsonIgnore
-    private List<Role> roles;
+    private List<Roles> roles;
 
 
     public Integer getId() {
@@ -168,12 +167,12 @@ public class User implements Serializable {
     }
 
     @JsonIgnore
-    public List<Role> getRoles() {
+    public List<Roles> getRoles() {
         return roles;
     }
 
     @JsonIgnore
-    public void setRoles(List<Role> roles) {
+    public void setRoles(List<Roles> roles) {
         this.roles = roles;
     }
 }

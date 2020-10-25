@@ -77,4 +77,14 @@ public class UserController {
     public Boolean isAdmin (@RequestParam (name = "token")String token){
         return jwtUtil.isAdmin(token);
     }
+
+    @GetMapping(value = "/public/checkDisponibilityEmail", params = {"email"})
+    public Boolean checkDisponibilityEmail(@RequestParam(name = "email")String email){
+        return userService.checkDisponibilityEmail(email);
+    }
+
+    @GetMapping(value = "/public/checkDisponibilityUsername", params = {"username"})
+    public Boolean checkDisponibilityUsername(@RequestParam(name = "username")String username){
+        return userService.checkDisponibilityUsername(username);
+    }
 }

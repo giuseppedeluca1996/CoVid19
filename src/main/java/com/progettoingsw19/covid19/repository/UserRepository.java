@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -30,5 +31,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             "OR u.name  LIKE CONCAT('%',:text,'%') " +
             "OR  u.surname  LIKE CONCAT('%',:text,'%')")
     Page<User> findAllByUsernameOrEmailOrNameOrSurname(Pageable pageable, String text);
+
 
 }

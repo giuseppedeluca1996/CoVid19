@@ -117,6 +117,12 @@ public class UserService {
     public List<Integer> getAllUserRolesByUsernameOrEmail(String  usernameOrEmail){ return userRepository.getRolesByUsernameOrEmail(usernameOrEmail); }
 
 
+    public Boolean checkDisponibilityEmail(String email) {
+        return userRepository.findByEmail(email) == null;
+    }
 
+    public Boolean checkDisponibilityUsername(String username) {
+        return userRepository.findByUsername(username) == null;
+    }
 }
 
