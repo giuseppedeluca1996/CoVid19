@@ -1,5 +1,6 @@
 package com.progettoingsw19.covid19.service;
 
+import com.progettoingsw19.covid19.model.Review;
 import com.progettoingsw19.covid19.model.Structure;
 import com.progettoingsw19.covid19.model.Type;
 import com.progettoingsw19.covid19.repository.StructureRepository;
@@ -11,6 +12,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
@@ -35,13 +37,7 @@ public class StructureService {
 
     public Page<Structure> getAllAttractionByText(Integer page, Integer size, String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(PageRequest.of(page,size),text, Type.ATTRACTION); }
 
-    public Collection<Structure> getAllStructureByText(String text){ return structureRepository.findByNameOrAddressOrCityOrState(text); }
 
-    public Collection<Structure> getAllHotelByText( String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(text,Type.HOTEL); }
-
-    public Collection<Structure> getAllRestaurantByText(String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals( text, Type.RESTAURANT); }
-
-    public Collection<Structure> getAllAttractionByText(String text){ return structureRepository.findByNameOrAddressOrCityOrStateAndTypeEquals(text, Type.ATTRACTION); }
 
 
 
@@ -104,11 +100,82 @@ public class StructureService {
         return structureRepository.getStructureAtDistance(latitude,longitude,distance);
     }
 
-    public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude) {
-        return structureRepository.getStructureAroundYou(latitude,longitude);
+
+    public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude,Double priceMin,Double priceMax,Double rating, Type... type) {
+        Collection<Structure>  s;
+        int num=0;
+        double avg;
+        double sum=0D;
+        switch (type.length){
+            case 1:{
+                s=structureRepository.getStructureAroundYou(latitude,longitude,priceMin,priceMax,type[0]);
+            }break;
+            case 2:{
+                s=structureRepository.getStructureAroundYou(latitude,longitude,priceMin,priceMax,type[0],type[1]);
+            }break;
+            case 3:{
+                s=structureRepository.getStructureAroundYou(latitude,longitude,priceMin,priceMax,type[0],type[1],type[2]);
+            }break;
+            default:{
+                return null;
+            }
+        }
+        if(s!=null){
+            Collection<Structure>  ris=new ArrayList<>();
+            for(Structure ss : s){
+                for(Review r: ss.getReviews()){
+                    sum=r.getRating().doubleValue()+sum;
+                    num++;
+                }
+                avg=sum/num;
+                if(avg<=rating){
+                    ris.add(ss);
+                }
+                sum=0D;
+                num=0;
+            }
+            return ris;
+        }
+        return s;
     }
-    public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude,Type type) {
-        return structureRepository.getStructureAroundYou(latitude,longitude,type);
+
+    public Collection<Structure> getStructureByText(Double priceMin, Double priceMax,String query,Double rating,Type... type) {
+
+       Collection<Structure>  s;
+       int num=0;
+       double avg;
+       double sum=0D;
+        switch (type.length){
+            case 1:{
+               s=structureRepository.getStructureByText(priceMin,priceMax,query,type[0]);
+            }break;
+            case 2:{
+                s=structureRepository.getStructureByText(priceMin,priceMax,query,type[0],type[1]);
+            }break;
+            case 3:{
+                s = structureRepository.getStructureByText(priceMin,priceMax,query,type[0],type[1],type[2]);
+            }break;
+            default:{
+                return null;
+            }
+        }
+        if(s!=null){
+            Collection<Structure>  ris=new ArrayList<>();
+            for(Structure ss : s){
+                for(Review r: ss.getReviews()){
+                    sum=r.getRating().doubleValue()+sum;
+                    num++;
+                }
+                avg=sum/num;
+                if(avg<=rating){
+                    ris.add(ss);
+                }
+                sum=0D;
+                num=0;
+            }
+            return ris;
+        }
+        return s;
     }
 
 
