@@ -50,6 +50,10 @@ public class StructureController {
             default ->  { return  structureService.getAllStructureByText(page,size,text); }
         }
     }
+    @GetMapping(value = "/public/getStructureAtDistance", params = {"latitude","longitude","distance"})
+    public Collection<Structure> getStructureAtDistance(@RequestParam(name = "latitude") BigDecimal latitude,@RequestParam(name = "longitude")BigDecimal longitude, @RequestParam(name = "distance")BigDecimal distance){
+        return structureService.getStructureAtDistance(latitude,longitude,distance);
+    }
 
     @PostMapping(value = "/public/getStructureByText")
     public Collection<Structure> getStructureByText(@RequestBody String body) {

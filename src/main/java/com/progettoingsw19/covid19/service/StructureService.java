@@ -100,7 +100,6 @@ public class StructureService {
         return structureRepository.getStructureAtDistance(latitude,longitude,distance);
     }
 
-
     public Collection<Structure> getStructureAroundYou(BigDecimal latitude, BigDecimal longitude,Double priceMin,Double priceMax,Double rating, Type... type) {
         Collection<Structure>  s;
         int num=0;

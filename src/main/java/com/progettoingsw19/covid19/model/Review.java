@@ -96,8 +96,8 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
-    @JsonBackReference
-    @JsonIgnore
+    //@JsonBackReference
+    //@JsonIgnore
     private  User idUser;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -161,12 +161,12 @@ public class Review {
         this.service = service;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public User getIdUser() {
         return idUser;
     }
 
-    @JsonIgnore
+   // @JsonIgnore
     public void setIdUser(User idUser) {
         this.idUser = idUser;
     }
