@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.StyledEditorKit;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Iterator;
 
 @RestController
 @RequestMapping( value = "/structure")

@@ -2,6 +2,7 @@ package com.progettoingsw19.covid19.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sun.istack.NotNull;
 
 
@@ -79,6 +80,7 @@ public class Review {
     @Column(name = "date")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date date;
 
 
@@ -96,14 +98,18 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
-    //@JsonBackReference
-    //@JsonIgnore
+   // @JsonBackReference
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private  User idUser;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_structure")
     @JsonIgnore
     private  Structure idStructure;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column(insertable = false, updatable = false)
+    private  Integer exte_id;
 
     public Integer getId() {
         return id;
@@ -161,12 +167,10 @@ public class Review {
         this.service = service;
     }
 
-    //@JsonIgnore
     public User getIdUser() {
         return idUser;
     }
 
-   // @JsonIgnore
     public void setIdUser(User idUser) {
         this.idUser = idUser;
     }
@@ -179,5 +183,13 @@ public class Review {
     @JsonIgnore
     public void setIdStructure(Structure idStructure) {
         this.idStructure = idStructure;
+    }
+
+    public Integer getExte_id() {
+        return exte_id;
+    }
+
+    public void setExte_id(Integer exte_id) {
+        this.exte_id = exte_id;
     }
 }

@@ -1,15 +1,17 @@
 package com.progettoingsw19.covid19.controller;
 
-import com.progettoingsw19.covid19.model.AvgRatingReviewOfStructure;
-import com.progettoingsw19.covid19.model.AvgRatingReviewOfUser;
-import com.progettoingsw19.covid19.model.Review;
-import com.progettoingsw19.covid19.model.Structure;
+import com.progettoingsw19.covid19.model.*;
 import com.progettoingsw19.covid19.service.ReviewService;
+import com.progettoingsw19.covid19.service.StructureService;
+import com.progettoingsw19.covid19.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -19,6 +21,12 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private StructureService structureService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/public/getAllReviewOfStructure", params = "idStructure")
     public List<Review> getAllReviewOfStructure(@RequestParam(name = "idStructure") Integer idStructure){
@@ -69,4 +77,24 @@ public class ReviewController {
     public Double AvgRatingOfReviewOfUser(@RequestParam(name = "id") Integer id, @RequestParam("year") Integer year, @RequestParam("month") Integer month){
         return reviewService.AvgRatingOfReviewOfStructureInYearAndMonth(id, year,month);
     }
+
+
+    @PostMapping("/insertReview")
+    public void insertUser( @RequestBody Review review){
+        Structure s=structureService.getStructureById(review.getExte_id());
+        review.setIdStructure(s);
+        Object principal=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username=null;
+        if( principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+            User user;
+            if( (user=userService.getUserByEmail(username)) == null){
+                user=userService.getUserByUsername(username);
+            }
+            review.setIdUser(user);
+            review.setDate(Calendar.getInstance().getTime());
+            reviewService.insert(review);
+        }
+    }
+
 }
