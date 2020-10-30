@@ -17,6 +17,9 @@
 
     <properties>
         <java.version>15</java.version>
+
+            <start-class>com.progettoingsw19.covid19.CoVid19Application</start-class>
+
     </properties>
 
     <dependencies>
@@ -94,6 +97,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>
+                                com.progettoingsw19.covid19.CoVid19Application
+                            </mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

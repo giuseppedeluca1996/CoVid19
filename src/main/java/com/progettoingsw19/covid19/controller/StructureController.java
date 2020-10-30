@@ -29,10 +29,10 @@ public class StructureController {
     @GetMapping(value = "/public/getAllStructures/{type}" )
     public Page<Structure> getAllStructure(@PathVariable("type") Type type, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         switch (type){
-            case HOTEL -> { return structureService.getAllHotel(page, size); }
-            case RESTAURANT -> { return structureService.getAllRestaurant(page, size); }
-            case ATTRACTION -> { return structureService.getAllAttraction(page, size); }
-            default ->  { return  structureService.getAllStructure(page,size); }
+            case HOTEL : { return structureService.getAllHotel(page, size); }
+            case RESTAURANT : { return structureService.getAllRestaurant(page, size); }
+            case ATTRACTION : { return structureService.getAllAttraction(page, size); }
+            default :  { return  structureService.getAllStructure(page,size); }
         }
     }
 
@@ -42,10 +42,10 @@ public class StructureController {
     @GetMapping(value = "/public/getAllStructuresByText/{type}/{text}" )
     public Page<Structure> getAllStructure(@PathVariable("type") Type type, @PathVariable("text") String text,  @RequestParam("page") Integer page,  @RequestParam("size") Integer size) {
         switch (type){
-            case HOTEL -> { return structureService.getAllHotelByText(page, size,text); }
-            case RESTAURANT -> { return structureService.getAllRestaurantByText(page, size, text); }
-            case ATTRACTION -> { return structureService.getAllAttractionByText(page, size,text); }
-            default ->  { return  structureService.getAllStructureByText(page,size,text); }
+            case HOTEL : { return structureService.getAllHotelByText(page, size,text); }
+            case RESTAURANT : { return structureService.getAllRestaurantByText(page, size, text); }
+            case ATTRACTION : { return structureService.getAllAttractionByText(page, size,text); }
+            default :  { return  structureService.getAllStructureByText(page,size,text); }
         }
     }
     @GetMapping(value = "/public/getStructureAtDistance", params = {"latitude","longitude","distance"})
